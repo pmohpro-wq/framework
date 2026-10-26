@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\Controller;
+use App\Support\Persian;
 use Illuminate\Http\Request;
 use Vanilo\Cart\Facades\Cart;
 use Vanilo\Product\Models\ProductProxy;
@@ -35,7 +36,7 @@ class CartController extends Controller
         }
 
         if ($inCart + $qty > (int) $product->stock) {
-            return back()->with('warning', 'تعداد درخواستی بیشتر از موجودی انبار است (' . \App\Support\Persian::digits($product->stock) . ' عدد).');
+            return back()->with('warning', 'تعداد درخواستی بیشتر از موجودی انبار است (' . Persian::digits($product->stock) . ' عدد).');
         }
 
         Cart::create();
@@ -63,7 +64,7 @@ class CartController extends Controller
                 $product = ProductProxy::find($item->product_id);
 
                 if ($product && $request->integer('quantity') > (int) $product->stock) {
-                    return back()->with('warning', 'تعداد درخواستی «' . $product->name . '» بیشتر از موجودی انبار است (' . \App\Support\Persian::digits($product->stock) . ' عدد).');
+                    return back()->with('warning', 'تعداد درخواستی «' . $product->name . '» بیشتر از موجودی انبار است (' . Persian::digits($product->stock) . ' عدد).');
                 }
 
                 $item->quantity = $request->integer('quantity');
