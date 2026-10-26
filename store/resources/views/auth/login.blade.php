@@ -23,16 +23,17 @@
             @csrf
             <div class="form-group">
                 <label>ایمیل</label>
-                <input type="email" name="email" value="{{ old('email') }}" class="form-control" dir="ltr" required autofocus>
+                <input type="email" name="email" value="{{ old('email', 'admin@example.com') }}" class="form-control" dir="ltr" required>
             </div>
             <div class="form-group">
                 <label>گذرواژه</label>
-                <input type="password" name="password" class="form-control" dir="ltr" required>
+                <input type="password" name="password" value="{{ old('password', 'admin1234') }}" class="form-control" dir="ltr" required>
             </div>
-            <button type="submit" class="btn btn-primary btn-block btn-lg">ورود</button>
+            <button type="submit" class="btn btn-primary btn-block btn-lg" autofocus>ورود</button>
         </form>
 
         <p class="muted" style="font-size:12px;margin-top:18px;text-align:center">
+            اطلاعات ورود به‌صورت پیش‌فرض پر شده است — فقط «ورود» را بزنید.<br>
             <a href="{{ route('home') }}">← بازگشت به فروشگاه</a>
         </p>
     </div>
