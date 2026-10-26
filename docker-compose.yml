@@ -1,0 +1,74 @@
+# ---------------------------------------------------------------
+# فروشگاه وانیلو — استقرار کامل با Docker
+#   وب (nginx) + اپ (php-fpm 8.4) + دیتابیس (MySQL 8.4)
+#
+# اجرا:
+#   cp .env.example .env        (اختیاری — برای تنظیم مقادیر)
+#   docker compose up -d --build
+#
+# فروشگاه:  http://localhost:8000
+# پنل ادمین: http://localhost:8000/admin  (admin@example.com)
+# ---------------------------------------------------------------
+name: vanilo-store
+
+x-store-env: &store-env
+  APP_NAME: ${APP_NAME:-فروشگاه من}
+  APP_ENV: ${APP_ENV:-production}
+  APP_DEBUG: ${APP_DEBUG:-false}
+  APP_URL: ${APP_URL:-http://localhost:8000}
+  DB_CONNECTION: mysql
+  DB_HOST: db
+  DB_PORT: "3306"
+  DB_DATABASE: ${DB_DATABASE:-store}
+  DB_USERNAME: ${DB_USERNAME:-store}
+  DB_PASSWORD: ${DB_PASSWORD:-store_secret}
+  ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin1234}
+  IRANIAN_GATEWAY_MERCHANT_ID: ${IRANIAN_GATEWAY_MERCHANT_ID:-}
+  IRANIAN_GATEWAY_URL: ${IRANIAN_GATEWAY_URL:-}
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: store/Dockerfile
+    restart: unless-stopped
+    environment: *store-env
+    volumes:
+      - storage_data:/var/www/html/store/storage
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: store/Dockerfile
+    command: ["nginx", "-g", "daemon off;"]
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8000}:80"
+    volumes:
+      - storage_data:/var/www/html/store/storage
+    depends_on:
+      - app
+
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    command: --mysql-native-password=OFF --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-store}
+      MYSQL_USER: ${DB_USERNAME:-store}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-store_secret}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_secret}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+volumes:
+  db_data:
+  storage_data:

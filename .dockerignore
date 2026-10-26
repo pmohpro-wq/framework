@@ -1,0 +1,15 @@
+# خارج از کانتکست ساخت داکر نگه داشته شود
+.git
+tools
+download
+skills
+upload
+worklog.md
+store/vendor
+store/node_modules
+store/database/database.sqlite
+store/storage/logs/*.log
+store/storage/framework/views/*.php
+store/storage/framework/sessions/*
+store/storage/framework/cache/data/*
+**/.DS_Store
