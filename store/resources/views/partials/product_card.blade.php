@@ -4,6 +4,9 @@
 
 <div class="product-card">
     <a href="{{ route('product.show', $product->slug) }}" class="card-img">
+        @if($hasDiscount)
+            <span class="discount-badge">{{ \App\Support\Persian::digits($discountPercent) }}٪</span>
+        @endif
         @if($img)
             <img src="{{ $img }}" alt="{{ $product->name }}" loading="lazy">
         @else
@@ -12,10 +15,10 @@
     </a>
     <div class="card-body">
         <a href="{{ route('product.show', $product->slug) }}" class="card-title">{{ $product->name }}</a>
+        @if($product->excerpt)
+            <div class="card-excerpt">{{ $product->excerpt }}</div>
+        @endif
         <div class="card-footer">
-            @if($hasDiscount)
-                <span class="discount-badge">{{ \App\Support\Persian::digits($discountPercent) }}٪</span>
-            @endif
             <div class="price-box">
                 @if($hasDiscount)
                     <span class="price-old">{{ \App\Support\Persian::toman($product->original_price, false) }}</span>

@@ -2,11 +2,20 @@
     <div class="container">
         <div class="footer-grid">
             <div>
-                <h4>درباره فروشگاه</h4>
-                <p style="font-size:14px">
+                <div class="footer-logo">
+                    <span class="logo-mark">ف</span>
+                    <span>فروشگاه من</span>
+                </div>
+                <p>
                     فروشگاه من بر پایه فریمورک وانیلو و لاراول ساخته شده است؛
-                    تجربه‌ای سریع و مطمئن برای خرید آنلاین.
+                    تجربه‌ای سریع و مطمئن برای خرید آنلاین با تمرکز بر کیفیت
+                    کالا و رضایت مشتری.
                 </p>
+                <div class="footer-trust">
+                    <span>پرداخت امن</span>
+                    <span>ضمانت اصالت کالا</span>
+                    <span>۷ روز بازگشت</span>
+                </div>
             </div>
             <div>
                 <h4>خدمات مشتریان</h4>
@@ -14,6 +23,19 @@
                     <li><a href="#">پیگیری سفارش</a></li>
                     <li><a href="#">شرایط بازگشت کالا</a></li>
                     <li><a href="#">پاسخ به پرسش‌های متداول</a></li>
+                    <li><a href="#">راهنمای خرید</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>دسته‌بندی‌ها</h4>
+                <ul>
+                    @foreach(($headerTaxons ?? collect()) as $taxon)
+                        <li>
+                            <a href="{{ route('category.show', ['taxonomySlug' => $taxon->taxonomy->slug ?? 'main', 'taxonSlug' => $taxon->slug]) }}">
+                                {{ $taxon->name }}
+                            </a>
+                        </li>
+                    @endforeach
                 </ul>
             </div>
             <div>

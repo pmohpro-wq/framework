@@ -39,6 +39,6 @@ class IranianPaymentRequest implements PaymentRequest
     /** آدرس صفحه پرداخت (شبیه‌ساز داخلی) */
     public function getRedirectUrl(): string
     {
-        return route('payment.iranian.pay', ['payment' => $this->payment->getPaymentId()]);
+        return route('payment.iranian.pay', ['paymentHash' => $this->payment->getPaymentId()]);
     }
 }

@@ -22,13 +22,13 @@
 
         <div class="bank-info">
             <div><span>پذیرنده</span><span>فروشگاه من</span></div>
-            <div><span>شناسه پیگیری</span><span dir="ltr">{{ $payment->payment_id }}</span></div>
+            <div><span>شناسه پیگیری</span><span dir="ltr">{{ $payment->getPaymentId() }}</span></div>
             <div><span>محصول</span><span dir="ltr">{{ $payment->payable ? $payment->payable->number : '-' }}</span></div>
         </div>
 
         <form action="{{ route('payment.iranian.callback') }}" method="post" class="bank-actions">
             @csrf
-            <input type="hidden" name="payment" value="{{ $payment->payment_id }}">
+            <input type="hidden" name="payment" value="{{ $payment->getPaymentId() }}">
 
             <button type="submit" name="status" value="success" class="btn btn-primary btn-lg">
                 پرداخت موفق ✔

@@ -97,7 +97,7 @@ class CheckoutController extends Controller
         // هدایت به پرداخت بر اساس درگاه انتخاب‌شده
         if ($paymentMethod->gateway === IranianGateway::ID) {
             return redirect()->to(
-                route('payment.iranian.pay', ['payment' => $payment->getPaymentId()])
+                route('payment.iranian.pay', ['paymentHash' => $payment->getPaymentId()])
             );
         }
 
