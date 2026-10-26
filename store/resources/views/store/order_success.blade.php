@@ -25,8 +25,13 @@
             </div>
 
             <div>
-                <a href="{{ route('home') }}" class="btn btn-primary">بازگشت به فروشگاه</a>
+                <a href="{{ route('track.show') }}" class="btn btn-primary">پیگیری سفارش</a>
+                <a href="{{ route('home') }}" class="btn btn-secondary">بازگشت به فروشگاه</a>
             </div>
+
+            <p class="muted" style="font-size:13px;margin-top:16px">
+                شمارهٔ سفارش را یادداشت کنید؛ ایمیل تأیید نیز برای شما ارسال شد.
+            </p>
         </div>
     </div>
 @endsection

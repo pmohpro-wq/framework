@@ -1190,3 +1190,153 @@ input, select, textarea { font-family: inherit; }
     .footer-grid { grid-template-columns: 1fr; }
     .bank-actions { flex-direction: column; }
 }
+
+/* =====================================================================
+   افزوده‌های نسخهٔ کامل — جستجو، پیگیری، صفحات ایستا، حساب کاربری، نظرات
+   ===================================================================== */
+
+.page-narrow { max-width: 760px; margin-inline: auto; }
+.lead { color: var(--ink-500); font-size: 15px; line-height: 2; margin: 4px 0 8px; }
+
+.page-section { padding: 18px 0 6px; }
+.page-section h2 {
+    font-size: 17px; color: var(--ink-900); margin-bottom: 10px;
+    padding-inline-start: 12px; border-inline-start: 3px solid var(--red-500);
+}
+.page-section p { color: var(--ink-700); line-height: 2.2; font-size: 14.5px; margin: 0; }
+
+.page-cta { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+
+/* فهرست سوالات متداول */
+.faq-list { display: grid; gap: 12px; margin-top: 22px; }
+.faq-item {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
+    overflow: hidden; transition: var(--tr);
+}
+.faq-item[open] { border-color: var(--red-500); box-shadow: var(--sh-sm); }
+.faq-item summary {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    padding: 15px 18px; cursor: pointer; font-weight: 500; color: var(--ink-900);
+    font-size: 14.5px; list-style: none; user-select: none;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item .faq-arrow { color: var(--red-500); font-size: 12px; transition: transform .2s; }
+.faq-item[open] .faq-arrow { transform: rotate(180deg); }
+.faq-item > p { padding: 0 18px 16px; color: var(--ink-700); line-height: 2.1; font-size: 14px; margin: 0; border-top: 1px dashed var(--line); padding-top: 14px; margin-top: -4px; }
+
+/* پیگیری سفارش */
+.track-result {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg);
+    padding: 24px; box-shadow: var(--sh-sm);
+}
+.track-head { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
+.order-number { font-size: 20px; font-weight: 700; color: var(--ink-900); letter-spacing: .5px; }
+
+.status-badge {
+    display: inline-block; padding: 5px 14px; border-radius: 99px;
+    font-size: 12.5px; font-weight: 600;
+}
+.status-pending   { background: #fdf4e3; color: #b7791f; }
+.status-on_hold   { background: #e8f0fe; color: #2a60c2; }
+.status-completed { background: var(--green-50); color: var(--green-500); }
+.status-cancelled { background: var(--red-50); color: var(--red-600); }
+
+.track-steps {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+    background: var(--line-soft); border-radius: var(--r-md); padding: 14px;
+}
+.track-step { text-align: center; font-size: 12.5px; color: var(--ink-400); }
+.track-step .dot {
+    width: 30px; height: 30px; line-height: 30px; margin: 0 auto 6px;
+    border-radius: 50%; background: #fff; border: 1.5px solid var(--line);
+    color: var(--ink-400); font-weight: 600; font-size: 13px;
+}
+.track-step.done { color: var(--green-500); }
+.track-step.done .dot { background: var(--green-500); border-color: var(--green-500); color: #fff; }
+
+.order-table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden; font-size: 14px; }
+.order-table th { background: var(--line-soft); color: var(--ink-500); font-weight: 500; font-size: 13px; padding: 11px 14px; text-align: right; }
+.order-table td { padding: 11px 14px; border-top: 1px solid var(--line); color: var(--ink-700); }
+.order-table .order-total td { background: var(--red-50); color: var(--red-600); font-weight: 700; }
+.track-meta { background: var(--line-soft); border-radius: var(--r-md); padding: 14px 18px; margin-top: 18px; display: grid; gap: 7px; font-size: 13.5px; color: var(--ink-700); }
+.track-meta .muted { margin-inline-end: 4px; }
+
+/* حساب کاربری */
+.account-layout { display: grid; grid-template-columns: 280px 1fr; gap: 22px; align-items: start; padding: 26px 0 40px; }
+.account-side {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg);
+    padding: 20px; box-shadow: var(--sh-sm); position: sticky; top: 90px;
+}
+.account-user { display: flex; align-items: center; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid var(--line-soft); }
+.account-user .avatar {
+    width: 46px; height: 46px; border-radius: 14px; background: linear-gradient(135deg, var(--red-500), #b8324a);
+    color: #fff; font-size: 20px; font-weight: 700; display: grid; place-items: center; flex-shrink: 0;
+}
+.account-nav { display: grid; gap: 4px; padding-top: 14px; }
+.account-nav a {
+    padding: 10px 14px; border-radius: var(--r-sm); color: var(--ink-700);
+    font-size: 14px; text-decoration: none; transition: var(--tr);
+}
+.account-nav a:hover { background: var(--line-soft); color: var(--ink-900); }
+.account-nav a.active { background: var(--red-50); color: var(--red-600); font-weight: 600; }
+.account-logout {
+    width: 100%; text-align: right; padding: 10px 14px; border: 0; background: none;
+    color: var(--ink-500); font-size: 14px; font-family: inherit; cursor: pointer; border-radius: var(--r-sm);
+}
+.account-logout:hover { background: var(--red-50); color: var(--red-600); }
+
+.order-list { display: grid; gap: 12px; }
+.order-card {
+    display: block; background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--r-md); padding: 16px 18px; text-decoration: none; transition: var(--tr);
+}
+.order-card:hover { border-color: var(--red-500); box-shadow: var(--sh-sm); transform: translateY(-1px); }
+.order-card-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.order-card-head .order-number { font-size: 15px; }
+.order-card-body { display: flex; align-items: center; gap: 16px; font-size: 13px; flex-wrap: wrap; }
+.order-card-total { margin-inline-start: auto; font-weight: 700; color: var(--ink-900); font-size: 14px; }
+
+/* نظرات محصول */
+.stars { color: #f5a623; letter-spacing: 2px; font-size: 14px; }
+.reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+.review-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md); padding: 16px 18px; }
+.review-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; }
+.review-author { font-weight: 600; color: var(--ink-900); font-size: 14px; }
+.review-body { color: var(--ink-700); font-size: 13.5px; line-height: 2; margin: 0 0 10px; }
+.review-date { font-size: 12px; }
+
+/* تماس با ما */
+.contact-layout { display: grid; grid-template-columns: 1fr 1.3fr; gap: 22px; padding: 20px 0 40px; align-items: start; }
+.contact-list { display: grid; gap: 12px; font-size: 14px; color: var(--ink-700); }
+.contact-list .muted { display: inline-block; min-width: 110px; }
+
+/* صفحهٔ ورود/ثبت‌نام مشتری */
+.auth-page { display: grid; place-items: center; padding: 40px 0 60px; }
+.auth-card {
+    width: 100%; max-width: 480px; background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--r-lg); padding: 34px 32px; box-shadow: var(--sh-md);
+}
+.auth-card .auth-logo { display: flex; justify-content: center; margin-bottom: 14px; }
+.auth-card .auth-logo .logo-mark { width: 52px; height: 52px; font-size: 26px; }
+.auth-card h1 { font-size: 20px; text-align: center; margin-bottom: 4px; }
+.auth-card .muted { text-align: center; font-size: 13.5px; margin-bottom: 22px; }
+.auth-alt { text-align: center; margin-top: 18px; font-size: 13.5px; color: var(--ink-500); }
+.auth-alt a { color: var(--red-500); font-weight: 600; text-decoration: none; }
+
+/* صفحه‌بندی */
+.pagination { display: flex; gap: 6px; justify-content: center; list-style: none; padding: 0; margin: 24px 0 0; flex-wrap: wrap; }
+.pagination li a, .pagination li span {
+    display: inline-block; min-width: 36px; padding: 8px 12px; text-align: center;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-sm);
+    color: var(--ink-700); font-size: 13.5px; text-decoration: none; transition: var(--tr);
+}
+.pagination li a:hover { border-color: var(--red-500); color: var(--red-600); }
+.pagination li.active span { background: var(--red-500); border-color: var(--red-500); color: #fff; font-weight: 600; }
+.pagination li.disabled span { opacity: .45; }
+
+@media (max-width: 900px) {
+    .account-layout { grid-template-columns: 1fr; }
+    .account-side { position: static; }
+    .contact-layout { grid-template-columns: 1fr; }
+    .track-steps { grid-template-columns: repeat(2, 1fr); }
+}

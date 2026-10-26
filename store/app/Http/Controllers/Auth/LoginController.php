@@ -23,7 +23,14 @@ class LoginController extends Controller
         if (Auth::attempt($credentials + ['is_active' => true], $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/admin/product');
+            $user = Auth::user();
+
+            // ادمین → پنل مدیریت؛ مشتری → حساب کاربری
+            if ($user->type === 'admin') {
+                return redirect()->intended('/admin/product');
+            }
+
+            return redirect()->intended(route('account.dashboard'));
         }
 
         return back()->withErrors([

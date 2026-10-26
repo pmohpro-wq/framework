@@ -54,4 +54,35 @@ class PaymentController extends Controller
             ->route('checkout.success', ['orderNumber' => $order->number])
             ->with('success', 'پرداخت با موفقیت انجام شد. سفارش شما در حال آماده‌سازی است.');
     }
+
+    /** بازگشت از زرین‌پال (v4): Authority + Status=OK|NOK */
+    public function zarinpalCallback(string $paymentHash, Request $request)
+    {
+        $payment = PaymentProxy::where('hash', $paymentHash)->firstOrFail();
+
+        $gateway = app(\App\Payment\Gateways\ZarinpalGateway::class);
+
+        $response = $gateway->processPaymentResponse($request, [
+            'payment'     => $payment,
+            'payment_id'  => $payment->getPaymentId(),
+            'amount'      => $payment->amount,
+        ]);
+
+        $handler = new PaymentResponseHandler($payment, $response);
+        $handler->writeResponseToHistory();
+        $handler->updatePayment();
+        $handler->fireEvents();
+
+        $order = $payment->payable;
+
+        if (! $response->wasSuccessful()) {
+            return redirect()
+                ->route('checkout.success', ['orderNumber' => $order->number])
+                ->with('error', 'پرداخت ناموفق بود یا لغو شد. می‌توانید مجدداً تلاش کنید.');
+        }
+
+        return redirect()
+            ->route('checkout.success', ['orderNumber' => $order->number])
+            ->with('success', 'پرداخت با موفقیت انجام شد. سفارش شما در حال آماده‌سازی است.');
+    }
 }

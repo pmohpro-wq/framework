@@ -20,10 +20,10 @@
             <div>
                 <h4>خدمات مشتریان</h4>
                 <ul>
-                    <li><a href="#">پیگیری سفارش</a></li>
-                    <li><a href="#">شرایط بازگشت کالا</a></li>
-                    <li><a href="#">پاسخ به پرسش‌های متداول</a></li>
-                    <li><a href="#">راهنمای خرید</a></li>
+                    <li><a href="{{ route('track.show') }}">پیگیری سفارش</a></li>
+                    <li><a href="{{ route('pages.returns') }}">شرایط بازگشت کالا</a></li>
+                    <li><a href="{{ route('pages.faq') }}">پاسخ به پرسش‌های متداول</a></li>
+                    <li><a href="{{ route('pages.shipping') }}">راهنمای خرید</a></li>
                 </ul>
             </div>
             <div>
@@ -36,6 +36,17 @@
                             </a>
                         </li>
                     @endforeach
+                </ul>
+            </div>
+            <div>
+                <h4>فروشگاه ما</h4>
+                <ul>
+                    <li><a href="{{ route('pages.about') }}">درباره ما</a></li>
+                    <li><a href="{{ route('pages.contact') }}">تماس با ما</a></li>
+                    <li><a href="{{ route('pages.terms') }}">قوانین و مقررات</a></li>
+                    <li>
+                        <a href="{{ auth()->check() ? route('account.dashboard') : route('account.register') }}">حساب کاربری</a>
+                    </li>
                 </ul>
             </div>
             <div>

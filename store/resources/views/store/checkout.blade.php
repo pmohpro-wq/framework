@@ -23,22 +23,22 @@
                         <div class="form-grid">
                             <div class="form-group">
                                 <label>نام <span class="required">*</span></label>
-                                <input type="text" name="firstname" value="{{ old('firstname') }}" class="form-control" required>
+                                <input type="text" name="firstname" value="{{ old('firstname', $billpayer->firstname ?? '') }}" class="form-control" required>
                                 @error('firstname')<div class="field-error">{{ $message }}</div>@enderror
                             </div>
                             <div class="form-group">
                                 <label>نام خانوادگی <span class="required">*</span></label>
-                                <input type="text" name="lastname" value="{{ old('lastname') }}" class="form-control" required>
+                                <input type="text" name="lastname" value="{{ old('lastname', $billpayer->lastname ?? '') }}" class="form-control" required>
                                 @error('lastname')<div class="field-error">{{ $message }}</div>@enderror
                             </div>
                             <div class="form-group">
                                 <label>ایمیل <span class="required">*</span></label>
-                                <input type="email" name="email" value="{{ old('email') }}" class="form-control" dir="ltr" required>
+                                <input type="email" name="email" value="{{ old('email', $billpayer->email ?? '') }}" class="form-control" dir="ltr" required>
                                 @error('email')<div class="field-error">{{ $message }}</div>@enderror
                             </div>
                             <div class="form-group">
                                 <label>شماره تماس <span class="required">*</span></label>
-                                <input type="tel" name="phone" value="{{ old('phone') }}" class="form-control" dir="ltr" required>
+                                <input type="tel" name="phone" value="{{ old('phone', $billpayer->phone ?? '') }}" class="form-control" dir="ltr" required>
                                 @error('phone')<div class="field-error">{{ $message }}</div>@enderror
                             </div>
                         </div>
@@ -104,6 +104,22 @@
                     <div class="checkout-box">
                         <h3>توضیحات سفارش (اختیاری)</h3>
                         <textarea name="notes" class="form-control" placeholder="مثلاً زمان مناسب تحویل...">{{ old('notes') }}</textarea>
+                    </div>
+
+                    {{-- کد تخفیف --}}
+                    <div class="checkout-box">
+                        <h3>کد تخفیف</h3>
+                        @if(session('success') && str_contains(session('success'), 'تخفیف'))
+                            <div class="alert alert-success">{{ session('success') }}</div>
+                        @endif
+                        <div style="display:flex;gap:10px">
+                            <input type="text" name="coupon" value="{{ old('coupon') }}" class="form-control"
+                                   dir="ltr" placeholder="مثال: WELCOME10" style="text-transform:uppercase">
+                        </div>
+                        @error('coupon')<div class="field-error">{{ $message }}</div>@enderror
+                        <p class="muted" style="font-size:12px;margin-top:8px">
+                            اگر کد تخفیف دارید وارد کنید؛ مبلغ کسر پیش از ثبت سفارش اعمال می‌شود.
+                        </p>
                     </div>
                 </div>
 

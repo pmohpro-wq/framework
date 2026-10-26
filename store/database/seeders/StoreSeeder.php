@@ -21,6 +21,8 @@ class StoreSeeder extends Seeder
         $this->seedPaymentMethods();
         $this->seedShipping();
         $this->seedCatalog();
+        $this->seedPromotion();
+        $this->seedReviews();
     }
 
     private function seedAdmin(): void
@@ -130,18 +132,18 @@ class StoreSeeder extends Seeder
         }
 
         $products = [
-            ['دسته' => 'digital', 'name' => 'گوشی موبایل سامسونگ Galaxy A55 ظرفیت ۲۵۶ گیگابایت', 'sku' => 'SG-A55-256', 'price' => 28450000, 'old' => 31200000, 'desc' => "نمایشگر Super AMOLED 6.6 اینچی با نرخ نوسازی ۱۲۰ هرتز\nدوربین اصلی ۵۰ مگاپیکسل با لرزشگیر اپتیکال\nباتری ۵۰۰۰ میلی‌آمپر با شارژ سریع ۲۵ وات"],
-            ['دسته' => 'digital', 'name' => 'هدفون بی‌سیم سونی مدل WH-CH720N', 'sku' => 'SN-CH720N', 'price' => 4890000, 'old' => 5600000, 'desc' => "حذف نویز فعال (ANC)\nتا ۳۵ ساعت پخش موسیقی\nاتصال همزمان دو دستگاه"],
-            ['دسته' => 'digital', 'name' => 'لپ‌تاپ ایسوس مدل VivoBook 15 Core i5', 'sku' => 'AS-VB15-I5', 'price' => 32700000, 'old' => null, 'desc' => "پردازنده Core i5-1235U نسل دوازدهم\nرم ۱۶ گیگابایت DDR4\nحافظه SSD ۵۱۲ گیگابایت"],
-            ['دسته' => 'digital', 'name' => 'ساعت هوشمند شیائومی Redmi Watch 5', 'sku' => 'XM-RW5', 'price' => 3250000, 'old' => 3800000, 'desc' => "نمایشگر AMOLED 2.07 اینچ\nپایش ضربان قلب و اکسیژن خون\nباتری تا ۱۸ روز"],
+            ['دسته' => 'digital', 'name' => 'گوشی موبایل سامسونگ Galaxy A55 ظرفیت ۲۵۶ گیگابایت', 'sku' => 'SG-A55-256', 'price' => 28450000, 'old' => 31200000, 'stock' => 12, 'desc' => "نمایشگر Super AMOLED 6.6 اینچی با نرخ نوسازی ۱۲۰ هرتز\nدوربین اصلی ۵۰ مگاپیکسل با لرزشگیر اپتیکال\nباتری ۵۰۰۰ میلی‌آمپر با شارژ سریع ۲۵ وات"],
+            ['دسته' => 'digital', 'name' => 'هدفون بی‌سیم سونی مدل WH-CH720N', 'sku' => 'SN-CH720N', 'price' => 4890000, 'old' => 5600000, 'stock' => 34, 'desc' => "حذف نویز فعال (ANC)\nتا ۳۵ ساعت پخش موسیقی\nاتصال همزمان دو دستگاه"],
+            ['دسته' => 'digital', 'name' => 'لپ‌تاپ ایسوس مدل VivoBook 15 Core i5', 'sku' => 'AS-VB15-I5', 'price' => 32700000, 'old' => null, 'stock' => 6, 'desc' => "پردازنده Core i5-1235U نسل دوازدهم\nرم ۱۶ گیگابایت DDR4\nحافظه SSD ۵۱۲ گیگابایت"],
+            ['دسته' => 'digital', 'name' => 'ساعت هوشمند شیائومی Redmi Watch 5', 'sku' => 'XM-RW5', 'price' => 3250000, 'old' => 3800000, 'stock' => 3, 'desc' => "نمایشگر AMOLED 2.07 اینچ\nپایش ضربان قلب و اکسیژن خون\nباتری تا ۱۸ روز"],
             ['دسته' => 'clothing', 'name' => 'کاپشن مردانه مدل آتلانتیک رنگ سرمه‌ای', 'sku' => 'CL-ATL-M-NV', 'price' => 1890000, 'old' => 2450000, 'desc' => "جنس پارچه: نانو فوتر درجه یک\nقابل استفاده در فصل پاییز و زمستان\nضدآب تا حدی و بادگیر"],
             ['دسته' => 'clothing', 'name' => 'تی‌شرت زنانه نخی مدل بلوسوم', 'sku' => 'CL-TS-W-BL', 'price' => 420000, 'old' => null, 'desc' => "صد درصد نخ پنبه\nطراحی آزاد و راحت\nقابل شستشو در ماشین لباسشویی"],
             ['دسته' => 'clothing', 'name' => 'کفش ورزشی نایک مدل Air Zoom', 'sku' => 'NK-AZ-42', 'price' => 4580000, 'old' => 5300000, 'desc' => "طراحی ارگونومیک برای دویدن\nکفی طبی با فناوری Zoom Air\nوزن سبک و تنفس‌پذیر"],
             ['دسته' => 'home', 'name' => 'جاروبرقی فیلیپس مدل 2000 Series', 'sku' => 'PH-VC2000', 'price' => 6890000, 'old' => null, 'desc' => "قدرت مکش ۱۹۰۰ وات\nفیلتر HEPA ضدحساسیت\nتوان نظافت جاری: ۴۵۰ وات"],
             ['دسته' => 'home', 'name' => 'سرویس قابلمه ۱۰ پارچه گرانیتی', 'sku' => 'HM-POT-10', 'price' => 5750000, 'old' => 6900000, 'desc' => "پوشش گرانیتی نچسب سه لایه\nمناسب انواع اجاق گاز از جمله القایی\nقابلمه‌های اکسترودی با بدنه ضخیم"],
             ['دسته' => 'home', 'name' => 'چای‌ساز و کتری برقی فلر مدل TS-909', 'sku' => 'FL-TS909', 'price' => 2140000, 'old' => null, 'desc' => "توان ۲۲۰۰ وات\nقوری پیرکس ۱ لیتری\nخاموشی خودکار پس از جوشیدن"],
-            ['دسته' => 'beauty', 'name' => 'کرم مرطوب‌کننده لافارر مناسب پوست خشک', 'sku' => 'BT-LF-CRM', 'price' => 396000, 'old' => 450000, 'desc' => "آبرسانی ۲۴ ساعته\nبدون چربی و جاذب سریع\nحاوی هیالورونیک اسید"],
-            ['دسته' => 'beauty', 'name' => 'ست مراقبت مو سراسر گیاهی گلوا', 'sku' => 'BT-GW-HR3', 'price' => 780000, 'old' => 920000, 'desc' => "شامپو + ماسک + سرم مو\nفاقد سولفات و پارابن\nمناسب موهای رنگ‌شده"],
+            ['دسته' => 'beauty', 'name' => 'کرم مرطوب‌کننده لافارر مناسب پوست خشک', 'sku' => 'BT-LF-CRM', 'price' => 396000, 'old' => 450000, 'stock' => 18, 'desc' => "آبرسانی ۲۴ ساعته\nبدون چربی و جاذب سریع\nحاوی هیالورونیک اسید"],
+            ['دسته' => 'beauty', 'name' => 'ست مراقبت مو سراسر گیاهی گلوا', 'sku' => 'BT-GW-HR3', 'price' => 780000, 'old' => 920000, 'stock' => 0, 'desc' => "شامپو + ماسک + سرم مو\nفاقد سولفات و پارابن\nمناسب موهای رنگ‌شده"],
         ];
 
         foreach ($products as $p) {
@@ -155,9 +157,14 @@ class StoreSeeder extends Seeder
                     'excerpt'        => mb_substr(str_replace("\n", ' ', $p['desc']), 0, 120) . '...',
                     'description'    => $p['desc'],
                     'state'          => 'active',
-                    'stock'          => 25,
+                    'stock'          => $p['stock'] ?? 25,
                 ]
             );
+
+            // به‌روزرسانی موجودی در اجراهای بعدی هم اعمال می‌شود
+            if (isset($p['stock'])) {
+                $product->update(['stock' => $p['stock']]);
+            }
 
             // اتصال دسته‌بندی (به‌صورت idempotent)
             $taxon = $taxons[$p['دسته']];
@@ -638,5 +645,71 @@ class StoreSeeder extends Seeder
         $this->rrect($img, 628, 646, 724, 716, 0, $this->col($img, $m, 55));
         // قطره تزئینی
         $this->softCircle($img, 500, 380, 40, [255, 255, 255], 120);
+    }
+
+    /**
+     * پروموشن خوش‌آمدگویی + کد تخفیف WELCOME10 (۱۰٪ تخفیف کل سبد)
+     * مدیریت بعدی از پنل: فروشگاه > پروموشن‌ها
+     */
+    private function seedPromotion(): void
+    {
+        $promotion = \Vanilo\Promotion\Models\PromotionProxy::firstOrCreate(
+            ['name' => 'تخفیف خوش‌آمدگویی'],
+            [
+                'description'     => '۱۰٪ تخفیف برای اولین خرید با کد WELCOME10',
+                'priority'        => 1,
+                'is_exclusive'    => false,
+                'usage_limit'     => null,
+                'is_coupon_based' => true,
+                'starts_at'       => now()->subDay(),
+                'ends_at'         => now()->addYear(),
+            ]
+        );
+
+        if (! \Vanilo\Promotion\Models\CouponProxy::findByCode('WELCOME10')) {
+            \Vanilo\Promotion\Models\Coupon::create([
+                'promotion_id' => $promotion->id,
+                'code'         => 'WELCOME10',
+                'usage_limit'  => null,
+            ]);
+        }
+
+        if ($promotion->actions()->count() === 0) {
+            \Vanilo\Promotion\Models\PromotionAction::create([
+                'promotion_id'  => $promotion->id,
+                'type'          => 'cart_percentage_discount',
+                'configuration' => ['percent' => 10],
+            ]);
+        }
+    }
+
+    /** چند نظر نمونهٔ منتشرشده برای پر بودن ویترین */
+    private function seedReviews(): void
+    {
+        if (\App\Models\ProductReview::count() > 0) {
+            return;
+        }
+
+        $samples = [
+            ['SG-A55-256', 'مهدی رضایی', 5, 'کیفیت ساخت عالیه و باتری واقعاً یک روز و نیم دوام میاره. ارسال هم سریع بود.'],
+            ['SN-CH720N', 'سارا محمدی', 4, 'حذف نویزش برای این قیمت فوق‌العاده‌ست؛ فقط کیف حملش کمی کوچک است.'],
+            ['NK-AZ-42', 'علی کریمی', 5, 'برای دویدن روزانه عالیه، سبک و راحته. سایز هم دقیق بود.'],
+            ['BT-LF-CRM', 'نگار حسینی', 4, 'برای پوست خشک زمستون من مناسبه، بو خوبی هم داره.'],
+            ['FL-TS909', 'رضا توکلی', 5, 'چای‌ساز خوبیه، قوری شیشه‌ای‌ش باکیفیته و خاموشی خودکار خیلی به کار میاد.'],
+        ];
+
+        foreach ($samples as [$sku, $name, $rating, $comment]) {
+            $product = Product::where('sku', $sku)->first();
+
+            if ($product) {
+                \App\Models\ProductReview::create([
+                    'product_id'  => $product->id,
+                    'name'        => $name,
+                    'rating'      => $rating,
+                    'comment'     => $comment,
+                    'is_approved' => true,
+                ]);
+            }
+        }
     }
 }

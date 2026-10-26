@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Payment\Gateways\IranianGateway;
+use App\Payment\Gateways\ZarinpalGateway;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -19,8 +20,9 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        // درگاه پرداخت ایرانی (اسکلت آماده اتصال به زرین‌پال و مشابه)
+        // درگاه‌های پرداخت: شبیه‌ساز ایرانی + زرین‌پال (در صورت تنظیم MERCHANT_ID اتصال واقعی می‌شود)
         PaymentGateways::register(IranianGateway::ID, IranianGateway::class);
+        PaymentGateways::register(ZarinpalGateway::ID, ZarinpalGateway::class);
 
         // کاربران admin از تمام محدودیت‌های ACL پنل مدیریت عبور می‌کنند
         Gate::before(function ($user, $ability) {
@@ -36,6 +38,36 @@ class AppServiceProvider extends ServiceProvider
                 'cartCount'    => Cart::itemCount(),
             ]);
         });
+
+        // افزودن آیتم‌های اختصاصی به منوی پنل مدیریت
+        $this->addAdminMenuItems();
+    }
+
+    private function addAdminMenuItems(): void
+    {
+        if (!class_exists(\Konekt\Menu\Facades\Menu::class) || app()->runningInConsole()) {
+            return;
+        }
+
+        $menu = \Konekt\Menu\Facades\Menu::get('appshell');
+
+        if (!$menu || !$menu->getItem('shop')) {
+            return;
+        }
+
+        // مسیرها به‌صورت لفظی داده می‌شوند (با کلید url) تا به زمان لود شدن
+        // روت‌های app وابسته نباشند؛ روت‌های app پس از boot شدن پرووایدرها لود می‌شوند
+        $menu->getItem('shop')
+            ->addSubItem('product_reviews', 'نظرات محصولات', ['url' => '/admin/custom/reviews'])
+            ->data('icon', 'chat')
+            ->activateOnUrls('/admin/custom/reviews*')
+            ->allowIfUserCan('list products');
+
+        $menu->getItem('shop')
+            ->addSubItem('contact_messages', 'پیام‌های مشتریان', ['url' => '/admin/custom/messages'])
+            ->data('icon', 'mail')
+            ->activateOnUrls('/admin/custom/messages*')
+            ->allowIfUserCan('list products');
     }
 }
 

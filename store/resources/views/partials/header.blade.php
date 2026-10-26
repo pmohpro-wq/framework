@@ -6,7 +6,7 @@
                 <span>فروشگاه من</span>
             </a>
 
-            <form class="header-search" action="{{ route('home') }}" method="get">
+            <form class="header-search" action="{{ route('search.results') }}" method="get">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
                 <input type="text" name="q" placeholder="جستجو در محصولات..." value="{{ request('q') }}">
             </form>
@@ -19,7 +19,15 @@
                         <span class="cart-badge">{{ \App\Support\Persian::digits($cartCount) }}</span>
                     @endif
                 </a>
-                <a href="/admin" class="btn-admin-link">ورود مدیر</a>
+                @auth
+                    <a href="{{ route('account.dashboard') }}" class="btn-admin-link">حساب من</a>
+                    @if(auth()->user()->type === 'admin')
+                        <a href="/admin/product" class="btn-admin-link">پنل مدیریت</a>
+                    @endif
+                @else
+                    <a href="{{ route('account.register') }}" class="btn-admin-link">ثبت‌نام</a>
+                    <a href="{{ route('login') }}" class="btn-admin-link">ورود</a>
+                @endauth
             </div>
         </div>
     </div>
@@ -34,6 +42,8 @@
                         </a>
                     </li>
                 @endforeach
+                <li><a href="{{ route('pages.faq') }}">سوالات متداول</a></li>
+                <li><a href="{{ route('pages.contact') }}">تماس با ما</a></li>
             </ul>
         </div>
     </nav>

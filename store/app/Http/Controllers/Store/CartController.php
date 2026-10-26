@@ -26,8 +26,20 @@ class CartController extends Controller
 
         $product = ProductProxy::findOrFail($request->input('product_id'));
 
+        // کنترل موجودی انبار
+        $qty = (int) $request->input('quantity', 1);
+        $inCart = (int) (Cart::getItems()->firstWhere('product_id', $product->id)?->qty ?? 0);
+
+        if ((int) ($product->stock ?? 0) === 0) {
+            return back()->with('warning', 'این کالا فعلاً ناموجود است.');
+        }
+
+        if ($inCart + $qty > (int) $product->stock) {
+            return back()->with('warning', 'تعداد درخواستی بیشتر از موجودی انبار است (' . \App\Support\Persian::digits($product->stock) . ' عدد).');
+        }
+
         Cart::create();
-        Cart::addItem($product, (int) $request->input('quantity', 1));
+        Cart::addItem($product, $qty);
 
         return redirect()
             ->route('cart.index')
@@ -47,6 +59,13 @@ class CartController extends Controller
             if ($request->integer('quantity') === 0) {
                 Cart::removeItem($item);
             } else {
+                // کنترل موجودی انبار هنگام تغییر تعداد
+                $product = ProductProxy::find($item->product_id);
+
+                if ($product && $request->integer('quantity') > (int) $product->stock) {
+                    return back()->with('warning', 'تعداد درخواستی «' . $product->name . '» بیشتر از موجودی انبار است (' . \App\Support\Persian::digits($product->stock) . ' عدد).');
+                }
+
                 $item->quantity = $request->integer('quantity');
                 $item->save();
             }

@@ -12,7 +12,7 @@
 <div class="login-page">
     <div class="login-card">
         <span class="logo-mark">ف</span>
-        <h1>ورود به پنل مدیریت</h1>
+        <h1>ورود به حساب</h1>
         <p class="sub">فروشگاه من — مبتنی بر وانیلو</p>
 
         @if($errors->any())
@@ -33,7 +33,9 @@
         </form>
 
         <p class="muted" style="font-size:12px;margin-top:18px;text-align:center">
-            اطلاعات ورود به‌صورت پیش‌فرض پر شده است — فقط «ورود» را بزنید.<br>
+            ورود مدیر: اطلاعات پیش‌فرض پر شده است — فقط «ورود» را بزنید.<br>
+            مشتری هستید؟ همین‌جا با ایمیل خودتان وارد شوید یا
+            <a href="{{ route('account.register') }}">ثبت‌نام کنید</a>.<br>
             <a href="{{ route('home') }}">← بازگشت به فروشگاه</a>
         </p>
     </div>

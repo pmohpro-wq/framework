@@ -26,6 +26,9 @@
 
                 <div class="buy-box">
                     @php($hasDiscount = isset($product->original_price) && $product->original_price && $product->original_price > $product->price)
+                    @php($stock = (int) ($product->stock ?? 0))
+                    @php($avgRating = \App\Models\ProductReview::averageFor($product->id))
+                    @php($reviewCount = \App\Models\ProductReview::where('product_id', $product->id)->where('is_approved', true)->count())
                     <div class="price-row">
                         <div>
                             @if($hasDiscount)
@@ -42,12 +45,20 @@
                         </div>
                     </div>
 
+                    @if($reviewCount > 0)
+                        <div class="rating-row" style="display:flex;align-items:center;gap:6px;margin-top:6px">
+                            <span class="stars" dir="ltr">{{ str_repeat('★', (int) round($avgRating)) }}{{ str_repeat('☆', 5 - (int) round($avgRating)) }}</span>
+                            <span class="muted" style="font-size:13px">{{ \App\Support\Persian::digits($avgRating) }} از ۵ ({{ \App\Support\Persian::digits($reviewCount) }} نظر)</span>
+                        </div>
+                    @endif
+
+                    @if($stock > 0)
                     <form action="{{ route('cart.add') }}" method="post" style="display:flex;gap:12px;align-items:center;margin-top:18px;flex-wrap:wrap">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         <div class="qty-input">
                             <button type="button" onclick="this.nextElementSibling.stepUp()">+</button>
-                            <input type="number" name="quantity" value="1" min="1" max="99">
+                            <input type="number" name="quantity" value="1" min="1" max="{{ min($stock, 99) }}">
                             <button type="button" onclick="this.previousElementSibling.stepDown()">−</button>
                         </div>
                         <button type="submit" class="btn btn-primary btn-lg" style="flex:1;min-width:200px">
@@ -55,12 +66,23 @@
                             افزودن به سبد خرید
                         </button>
                     </form>
+                    @else
+                    <div style="margin-top:18px">
+                        <button type="button" class="btn btn-secondary btn-lg" disabled style="width:100%;opacity:.6;cursor:not-allowed">
+                            این کالا فعلاً ناموجود است
+                        </button>
+                    </div>
+                    @endif
                 </div>
 
                 <div class="trust-chips">
                     <span class="trust-chip">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                        موجود در انبار
+                        @if($stock > 0)
+                            موجود در انبار{{ $stock <= 5 ? ' (' . \App\Support\Persian::digits($stock) . ' عدد)' : '' }}
+                        @else
+                            ناموجود
+                        @endif
                     </span>
                     <span class="trust-chip">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11"/><path d="M14 9h4l4 4v4c0 .6-.4 1-1 1h-2"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
@@ -79,6 +101,70 @@
                 <div class="description">{{ $product->description }}</div>
             </div>
         </div>
+
+        {{-- نظرات کاربران --}}
+        <section class="section" id="reviews">
+            <div class="section-head">
+                <h2>نظرات کاربران
+                    @if($reviewCount > 0)
+                        <span class="muted" style="font-size:14px;font-weight:400">({{ \App\Support\Persian::digits($reviewCount) }} نظر)</span>
+                    @endif
+                </h2>
+            </div>
+
+            @if(($reviews ?? collect())->isNotEmpty())
+                <div class="reviews-grid">
+                    @foreach($reviews as $review)
+                        <div class="review-card">
+                            <div class="review-head">
+                                <span class="review-author">{{ $review->name }}</span>
+                                <span class="stars" dir="ltr">{{ str_repeat('★', $review->rating) }}{{ str_repeat('☆', 5 - $review->rating) }}</span>
+                            </div>
+                            <p class="review-body">{{ $review->comment }}</p>
+                            <div class="review-date muted">{{ $review->created_at->translatedFormat('Y/m/d') }}</div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <p class="muted">هنوز نظری برای این کالا ثبت نشده است. اولین نفر باشید!</p>
+            @endif
+
+            <div class="checkout-box" style="max-width:680px;margin-top:20px">
+                <h3>ثبت نظر جدید</h3>
+                <form action="{{ route('review.store', ['slug' => $product->slug]) }}" method="post">
+                    @csrf
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>نام شما <span class="required">*</span></label>
+                            <input type="text" name="name" value="{{ old('name', auth()->user()?->name) }}" class="form-control" required>
+                            @error('name')<div class="field-error">{{ $message }}</div>@enderror
+                        </div>
+                        <div class="form-group">
+                            <label>امتیاز <span class="required">*</span></label>
+                            <select name="rating" class="form-control" required>
+                                <option value="5">۵ — عالی</option>
+                                <option value="4">۴ — خوب</option>
+                                <option value="3">۳ — متوسط</option>
+                                <option value="2">۲ — ضعیف</option>
+                                <option value="1">۱ — بد</option>
+                            </select>
+                            @error('rating')<div class="field-error">{{ $message }}</div>@enderror
+                        </div>
+                        <div class="form-group" style="grid-column:1/-1">
+                            <label>ایمیل (اختیاری — منتشر نمی‌شود)</label>
+                            <input type="email" name="email" value="{{ old('email', auth()->user()?->email) }}" class="form-control" dir="ltr">
+                            @error('email')<div class="field-error">{{ $message }}</div>@enderror
+                        </div>
+                        <div class="form-group" style="grid-column:1/-1">
+                            <label>متن نظر <span class="required">*</span></label>
+                            <textarea name="comment" rows="4" class="form-control" required>{{ old('comment') }}</textarea>
+                            @error('comment')<div class="field-error">{{ $message }}</div>@enderror
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="margin-top:12px">ثبت نظر</button>
+                </form>
+            </div>
+        </section>
 
         @if($related->isNotEmpty())
             <section class="section">
