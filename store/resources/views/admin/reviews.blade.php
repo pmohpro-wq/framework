@@ -6,7 +6,6 @@
 
 @section('content')
     <div class="container-fluid">
-        <h1 style="margin:0 0 20px">نظرات محصولات</h1>
 
         <div class="card mb-4">
             <div class="card-header">در انتظار تأیید ({{ $pending->count() }})</div>

@@ -4,11 +4,7 @@
 
 @section('content')
     <div class="container">
-        <div class="breadcrumb">
-            <a href="{{ route('home') }}">خانه</a>
-            <span>/</span>
-            <span>{{ $title }}</span>
-        </div>
+        @include('partials.breadcrumb', ['items' => [['label' => $title]]])
 
         <div class="page page-narrow">
             <h1>{{ $title }}</h1>

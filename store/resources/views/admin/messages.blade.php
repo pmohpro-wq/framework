@@ -6,7 +6,6 @@
 
 @section('content')
     <div class="container-fluid">
-        <h1 style="margin:0 0 20px">پیام‌های مشتریان</h1>
 
         <div class="card">
             <div class="card-body p-0">
@@ -27,7 +26,7 @@
                         </thead>
                         <tbody>
                             @foreach($messages as $message)
-                                <tr class="{{ $message->is_read ? '' : 'font-weight-bold' }}">
+                                <tr class="{{ $message->is_read ? '' : 'fw-bold' }}">
                                     <td>{{ $message->name }}</td>
                                     <td dir="ltr">{{ $message->email }}</td>
                                     <td>{{ $message->subject ?? '—' }}</td>
@@ -36,7 +35,7 @@
                                     <td>
                                         {{ $message->is_read ? 'خوانده‌شده' : 'جدید' }}
                                     </td>
-                                    <td class="text-left">
+                                    <td class="text-start">
                                         @unless($message->is_read)
                                             <form action="{{ route('admin.custom.messages.read', $message) }}" method="post" class="d-inline">
                                                 @csrf

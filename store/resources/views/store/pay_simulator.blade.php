@@ -12,13 +12,17 @@
     <div class="bank-head">
         <div class="bank-logo">بانک</div>
         <div>
-            <div style="font-weight:700">درگاه پرداخت اینترنتی</div>
-            <div style="font-size:12px;opacity:.7">پرداخت امن — شبیه‌ساز درگاه</div>
+            <div class="title">درگاه پرداخت اینترنتی</div>
+            <div class="sub">پرداخت امن — شبیه‌ساز درگاه</div>
         </div>
     </div>
 
     <div class="bank-body">
-        <div class="bank-amount">{{ \App\Support\Persian::toman($payment->amount) }}</div>
+        <div class="bank-amount">
+            <span class="label">مبلغ قابل پرداخت</span>
+            <b>{{ \App\Support\Persian::toman($payment->amount) }}</b>
+            <span class="unit">تومان</span>
+        </div>
 
         <div class="bank-info">
             <div><span>پذیرنده</span><span>فروشگاه من</span></div>
@@ -31,14 +35,16 @@
             <input type="hidden" name="payment" value="{{ $payment->getPaymentId() }}">
 
             <button type="submit" name="status" value="success" class="btn btn-primary btn-lg">
-                پرداخت موفق ✔
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                پرداخت موفق
             </button>
             <button type="submit" name="status" value="failed" class="btn btn-outline btn-lg">
-                انصراف / خطا ✖
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                انصراف / خطا
             </button>
         </form>
 
-        <p class="muted" style="font-size:12px;margin-top:18px;text-align:center">
+        <p class="fine-print">
             این صفحه شبیه‌ساز درگاه بانکی است. برای اتصال به درگاه واقعی (زرین‌پال و مشابه)،
             تنظیمات <code dir="ltr">IRANIAN_GATEWAY_*</code> در فایل env را کامل کنید.
         </p>

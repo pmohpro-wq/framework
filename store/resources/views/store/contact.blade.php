@@ -4,13 +4,9 @@
 
 @section('content')
     <div class="container">
-        <div class="breadcrumb">
-            <a href="{{ route('home') }}">خانه</a>
-            <span>/</span>
-            <span>تماس با ما</span>
-        </div>
+        @include('partials.breadcrumb', ['items' => [['label' => 'تماس با ما']]])
 
-        <h1 style="margin-bottom:6px">تماس با ما</h1>
+        <h1 class="page-title">تماس با ما</h1>
         <p class="muted">پیشنهاد، انتقاد یا سوالی دارید؟ خوشحال می‌شویم بشنویم.</p>
 
         <div class="contact-layout">
@@ -39,9 +35,9 @@
 
                 <div class="checkout-box">
                     <h3>سریع‌تر پاسخ بگیرید</h3>
-                    <p class="muted" style="font-size:14px;line-height:2">
+                    <p class="lead">
                         برای پیگیری وضعیت سفارش، نیازی به تماس نیست؛
-                        شمارهٔ سفارش را در <a href="{{ route('track.show') }}" style="color:var(--primary)">صفحهٔ پیگیری سفارش</a> وارد کنید.
+                        شمارهٔ سفارش را در <a href="{{ route('track.show') }}" class="text-brand">صفحهٔ پیگیری سفارش</a> وارد کنید.
                     </p>
                 </div>
             </div>
@@ -62,20 +58,22 @@
                                 <input type="email" name="email" value="{{ old('email') }}" class="form-control" dir="ltr" required>
                                 @error('email')<div class="field-error">{{ $message }}</div>@enderror
                             </div>
-                            <div class="form-group" style="grid-column:1/-1">
+                            <div class="form-group full">
                                 <label>موضوع</label>
                                 <input type="text" name="subject" value="{{ old('subject') }}" class="form-control" placeholder="مثلاً: بازگشت کالا، سوال دربارهٔ سفارش...">
                                 @error('subject')<div class="field-error">{{ $message }}</div>@enderror
                             </div>
-                            <div class="form-group" style="grid-column:1/-1">
+                            <div class="form-group full">
                                 <label>متن پیام <span class="required">*</span></label>
                                 <textarea name="message" rows="6" class="form-control" required>{{ old('message') }}</textarea>
                                 @error('message')<div class="field-error">{{ $message }}</div>@enderror
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-lg" style="margin-top:14px;width:100%">
-                            ارسال پیام
-                        </button>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary btn-lg btn-block">
+                                ارسال پیام
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>

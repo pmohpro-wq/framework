@@ -4,24 +4,15 @@
 
 @section('content')
     <div class="container">
-        <div class="breadcrumb">
-            <a href="{{ route('home') }}">خانه</a>
-            <span>/</span>
-            <a href="{{ route('account.dashboard') }}">حساب کاربری</a>
-            <span>/</span>
-            <span>{{ $order->number }}</span>
-        </div>
+        @include('partials.breadcrumb', [
+            'items' => [
+                ['label' => 'حساب کاربری', 'url' => route('account.dashboard')],
+                ['label' => $order->number],
+            ],
+        ])
 
         <div class="page page-narrow">
-            <div class="track-head" style="margin-bottom:20px">
-                <div>
-                    <div class="muted" style="font-size:13px">سفارش</div>
-                    <div class="order-number" dir="ltr">{{ $order->number }}</div>
-                </div>
-                <span class="status-badge {{ \App\Support\OrderPresenter::statusClass($order->status?->value(), $paymentStatus) }}">
-                    {{ \App\Support\OrderPresenter::statusLabel($order->status?->value(), $paymentStatus) }}
-                </span>
-            </div>
+            @include('partials.order_status_head', ['order' => $order, 'class' => 'track-head--page'])
 
             <table class="order-table">
                 <thead>

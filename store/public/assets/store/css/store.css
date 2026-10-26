@@ -18,6 +18,12 @@
 }
 @font-face {
     font-family: 'Vazirmatn';
+    src: url('../fonts/Vazirmatn-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Vazirmatn';
     src: url('../fonts/Vazirmatn-Bold.woff2') format('woff2');
     font-weight: 700;
     font-display: swap;
@@ -34,6 +40,9 @@
     --red-500: #ef4056;
     --red-600: #d9374c;
     --red-50:  #fdeef0;
+
+    /* نام‌های معنایی — همیشه از این‌ها استفاده شود */
+    --primary: var(--red-500);
 
     --green-500: #0fa36b;
     --green-50:  #e6f6ef;
@@ -91,7 +100,17 @@ input, select, textarea { font-family: inherit; }
 }
 
 .muted { color: var(--ink-500); font-size: 13px; }
-.link-danger { color: var(--red-500); font-size: 12.5px; }
+.muted-sm { color: var(--ink-500); font-size: 12px; }
+.text-brand { color: var(--primary); }
+.text-brand:hover { color: var(--red-600); }
+.link-danger {
+    color: var(--red-500);
+    font-size: 12.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+.link-danger svg { width: 14px; height: 14px; stroke: currentColor; }
 .link-danger:hover { color: var(--red-600); }
 
 /* ---------------- هشدارها ---------------- */
@@ -131,15 +150,19 @@ input, select, textarea { font-family: inherit; }
     box-shadow: 0 6px 16px -6px rgba(239, 64, 86, .55);
 }
 .btn-primary:hover { background: var(--red-600); transform: translateY(-1px); }
-.btn-outline {
+.btn-outline,
+.btn-secondary {
     background: #fff;
     border-color: var(--line);
     color: var(--ink-700);
 }
-.btn-outline:hover { border-color: var(--red-500); color: var(--red-500); }
+.btn-outline:hover,
+.btn-secondary:hover { border-color: var(--red-500); color: var(--red-500); }
 .btn-lg { padding: 13px 30px; font-size: 15px; border-radius: 14px; }
 .btn-block { width: 100%; }
 .btn:disabled { opacity: .55; cursor: not-allowed; transform: none !important; }
+.btn svg { width: 17px; height: 17px; stroke: currentColor; flex-shrink: 0; }
+.btn-lg svg { width: 19px; height: 19px; }
 
 /* ---------------- هدر ---------------- */
 .site-header {
@@ -325,6 +348,7 @@ input, select, textarea { font-family: inherit; }
     color: #ffd7dd;
     margin-bottom: 18px;
 }
+.hero-eyebrow svg { width: 13px; height: 13px; fill: currentColor; }
 .hero h1 {
     font-size: 34px;
     font-weight: 700;
@@ -769,13 +793,6 @@ input, select, textarea { font-family: inherit; }
     position: sticky;
     top: 96px;
 }
-.cart-summary h3 {
-    font-size: 15.5px;
-    font-weight: 700;
-    padding-bottom: 14px;
-    border-bottom: 1px solid var(--line-soft);
-    margin-bottom: 14px;
-}
 .cart-summary .row {
     display: flex;
     justify-content: space-between;
@@ -896,15 +913,18 @@ input, select, textarea { font-family: inherit; }
     background: #fff;
 }
 .option-card:hover { border-color: #c6cbe0; }
-.option-card.selected, .option-card input:checked + .opt-body { border-color: var(--red-500); }
 .option-card:has(input:checked) {
     border-color: var(--red-500);
     background: #fffafc;
     box-shadow: 0 0 0 4px rgba(239, 64, 86, .07);
 }
 .option-card input { accent-color: var(--red-500); width: 18px; height: 18px; flex-shrink: 0; }
-.opt-body { flex: 1; }
-.opt-body .label { font-size: 13.5px; font-weight: 500; color: var(--ink-900); }
+.opt-body { flex: 1; display: grid; gap: 2px; }
+.opt-body .label {
+    font-size: 13.5px; font-weight: 500; color: var(--ink-900);
+    display: flex; align-items: center; gap: 9px;
+}
+.opt-body .label svg { width: 19px; height: 19px; stroke: var(--ink-500); flex-shrink: 0; }
 .opt-body .muted { font-size: 12px; }
 .opt-price { font-size: 13px; font-weight: 700; color: var(--green-500); white-space: nowrap; }
 
@@ -937,8 +957,8 @@ input, select, textarea { font-family: inherit; }
     font-weight: 700;
     font-size: 16px;
 }
-.bank-head b { font-size: 15px; display: block; }
-.bank-head .muted { color: #b9c0e3; }
+.bank-head .title { font-weight: 700; font-size: 14.5px; }
+.bank-head .sub { font-size: 12px; opacity: .72; }
 .bank-body { padding: 26px; }
 .bank-amount {
     text-align: center;
@@ -987,6 +1007,7 @@ input, select, textarea { font-family: inherit; }
 }
 .success-hero h1 { font-size: 21px; font-weight: 700; margin-bottom: 8px; }
 .success-hero .muted { font-size: 13.5px; }
+.success-hero .note { font-size: 13px; margin-top: 16px; }
 .order-meta {
     margin-top: 26px;
     background: #fafbfe;
@@ -1019,36 +1040,11 @@ input, select, textarea { font-family: inherit; }
     place-items: center;
     background: var(--line-soft);
     border-radius: 50%;
-    font-size: 34px;
 }
-.empty-state p { color: var(--ink-500); font-size: 14px; line-height: 2.2; }
-
-/* ---------------- صفحه‌بندی ---------------- */
-.pagination {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 34px;
-}
-.pagination a, .pagination span {
-    min-width: 40px;
-    height: 40px;
-    display: inline-grid;
-    place-items: center;
-    padding-inline: 12px;
-    background: #fff;
-    border: 1.5px solid var(--line);
-    border-radius: var(--r-md);
-    font-size: 13.5px;
-    font-weight: 500;
-    color: var(--ink-700);
-}
-.pagination .active span, .pagination span.current {
-    background: var(--red-500);
-    border-color: var(--red-500);
-    color: #fff;
-}
-.pagination a:hover { border-color: var(--red-500); color: var(--red-500); }
+.empty-state .icon svg { width: 38px; height: 38px; stroke: var(--ink-400); }
+.empty-state p { color: var(--ink-500); font-size: 14px; line-height: 2.2; margin: 10px 0 20px; }
+.empty-state p:last-child { margin-bottom: 0; }
+.empty-state .btn { margin-top: 14px; }
 
 /* ---------------- ورود ---------------- */
 .login-page {
@@ -1237,7 +1233,6 @@ input, select, textarea { font-family: inherit; }
     font-size: 12.5px; font-weight: 600;
 }
 .status-pending   { background: #fdf4e3; color: #b7791f; }
-.status-on_hold   { background: #e8f0fe; color: #2a60c2; }
 .status-processing { background: #e8f0fe; color: #2a60c2; }
 .status-withdrawn { background: #f1f3f5; color: #6b7280; }
 .status-completed { background: var(--green-50); color: var(--green-500); }
@@ -1270,6 +1265,8 @@ input, select, textarea { font-family: inherit; }
     padding: 20px; box-shadow: var(--sh-sm); position: sticky; top: 90px;
 }
 .account-user { display: flex; align-items: center; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid var(--line-soft); }
+.account-user .name { font-weight: 600; color: var(--ink-900); }
+.account-user .email { font-size: 12px; }
 .account-user .avatar {
     width: 46px; height: 46px; border-radius: 14px; background: linear-gradient(135deg, var(--red-500), #b8324a);
     color: #fff; font-size: 20px; font-weight: 700; display: grid; place-items: center; flex-shrink: 0;
@@ -1322,11 +1319,13 @@ input, select, textarea { font-family: inherit; }
 .auth-card .auth-logo .logo-mark { width: 52px; height: 52px; font-size: 26px; }
 .auth-card h1 { font-size: 20px; text-align: center; margin-bottom: 4px; }
 .auth-card .muted { text-align: center; font-size: 13.5px; margin-bottom: 22px; }
+.auth-card .btn { margin-top: 8px; }
 .auth-alt { text-align: center; margin-top: 18px; font-size: 13.5px; color: var(--ink-500); }
 .auth-alt a { color: var(--red-500); font-weight: 600; text-decoration: none; }
 
-/* صفحه‌بندی */
-.pagination { display: flex; gap: 6px; justify-content: center; list-style: none; padding: 0; margin: 24px 0 0; flex-wrap: wrap; }
+/* صفحه‌بندی (یک تعریف — سازگار با خروجی پیش‌فرض لاراول) */
+.pagination { display: flex; justify-content: center; margin-top: 28px; }
+.pagination ul { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
 .pagination li a, .pagination li span {
     display: inline-block; min-width: 36px; padding: 8px 12px; text-align: center;
     background: var(--card); border: 1px solid var(--line); border-radius: var(--r-sm);
@@ -1336,9 +1335,75 @@ input, select, textarea { font-family: inherit; }
 .pagination li.active span { background: var(--red-500); border-color: var(--red-500); color: #fff; font-weight: 600; }
 .pagination li.disabled span { opacity: .45; }
 
+/* =====================================================================
+   کلاس‌های مشترک چیدمان — به‌جای استایل درون‌خطی در ویوها
+   ===================================================================== */
+
+/* --- فاصله‌های کمکی (مقیاس ۴px) --- */
+.mt-8 { margin-top: 8px; }
+.mt-12 { margin-top: 12px; }
+.mt-16 { margin-top: 16px; }
+.mt-20 { margin-top: 20px; }
+.mt-24 { margin-top: 24px; }
+.mb-8 { margin-bottom: 8px; }
+.mb-16 { margin-bottom: 16px; }
+
+/* --- عنوان‌ها --- */
+.page-title { font-size: 19px; font-weight: 700; color: var(--ink-900); margin-bottom: 6px; }
+.content-title { font-size: 17px; font-weight: 700; color: var(--ink-900); margin-bottom: 16px; }
+.subsection-title { font-size: 15px; font-weight: 700; color: var(--ink-900); margin: 22px 0 12px; }
+.section-note { font-size: 13px; font-weight: 400; color: var(--ink-500); }
+.result-count { margin-bottom: 16px; }
+
+/* --- فرم‌ها --- */
+.form-actions { margin-top: 14px; }
+.form-stack > * + * { margin-top: 16px; }
+.inline-form {
+    display: flex; align-items: center; gap: 10px;
+    max-width: 520px; margin-block: 20px 28px;
+}
+.inline-form .form-control { flex: 1; min-width: 0; }
+.coupon-field { display: flex; gap: 10px; }
+.coupon-field .form-control { text-transform: uppercase; letter-spacing: .5px; }
+
+/* --- جعبه‌های تسویه‌حساب --- */
+.checkout-box--sticky { position: sticky; top: 90px; }
+.sum-row {
+    display: flex; justify-content: space-between; align-items: center; gap: 10px;
+    margin-bottom: 10px; font-size: 13.5px; color: var(--ink-700);
+}
+.sum-row--muted { font-size: 12.5px; color: var(--ink-500); margin-bottom: 16px; }
+.fine-print {
+    font-size: 12px; color: var(--ink-500); line-height: 2;
+    text-align: center; margin-top: 16px;
+}
+
+/* --- صفحهٔ محصول --- */
+.discount-badge--inline {
+    position: static; display: inline-block;
+    margin-bottom: 6px; box-shadow: none;
+}
+.rating-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.buy-actions {
+    display: flex; align-items: center; gap: 12px;
+    margin-top: 18px; flex-wrap: wrap;
+}
+.buy-actions .btn { flex: 1; min-width: 200px; }
+.out-of-stock { margin-top: 18px; }
+.review-form-box { max-width: 680px; margin-top: 20px; }
+
+/* --- سبد خرید --- */
+.cart-actions { margin-top: 16px; }
+.cart-table .cell-total { font-weight: 700; }
+
+/* --- پیگیری و حساب --- */
+.track-head--page { margin-bottom: 20px; }
+
+/* --- فوتر نوار ابزار کوچک --- */
 @media (max-width: 900px) {
     .account-layout { grid-template-columns: 1fr; }
     .account-side { position: static; }
     .contact-layout { grid-template-columns: 1fr; }
     .track-steps { grid-template-columns: repeat(2, 1fr); }
+    .buy-actions .btn { min-width: 160px; }
 }

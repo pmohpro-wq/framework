@@ -12,7 +12,7 @@
 
                 <form action="{{ route('account.register.store') }}" method="post">
                     @csrf
-                    <div class="form-grid" style="grid-template-columns:1fr 1fr">
+                    <div class="form-grid">
                         <div class="form-group">
                             <label>نام <span class="required">*</span></label>
                             <input type="text" name="firstname" value="{{ old('firstname') }}" class="form-control" required>
@@ -48,7 +48,7 @@
                         <input type="password" name="password_confirmation" class="form-control" dir="ltr" autocomplete="new-password" required>
                     </div>
 
-                    <button type="submit" class="btn btn-primary btn-lg btn-block" style="margin-top:8px">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">
                         ثبت‌نام
                     </button>
                 </form>

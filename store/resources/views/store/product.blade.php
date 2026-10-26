@@ -4,11 +4,7 @@
 
 @section('content')
     <div class="container">
-        <div class="breadcrumb">
-            <a href="{{ route('home') }}">خانه</a>
-            <span>/</span>
-            <span>{{ $product->name }}</span>
-        </div>
+        @include('partials.breadcrumb', ['items' => [['label' => $product->name]]])
 
         <div class="page product-page">
             <div class="gallery">
@@ -32,7 +28,7 @@
                     <div class="price-row">
                         <div>
                             @if($hasDiscount)
-                                <span class="discount-badge" style="position:static;display:inline-block;margin-bottom:6px">
+                                <span class="discount-badge discount-badge--inline">
                                     {{ \App\Support\Persian::digits(round(100 - ($product->price / $product->original_price) * 100)) }}٪ تخفیف
                                 </span>
                             @endif
@@ -46,14 +42,14 @@
                     </div>
 
                     @if($reviewCount > 0)
-                        <div class="rating-row" style="display:flex;align-items:center;gap:6px;margin-top:6px">
+                        <div class="rating-row">
                             <span class="stars" dir="ltr">{{ str_repeat('★', (int) round($avgRating)) }}{{ str_repeat('☆', 5 - (int) round($avgRating)) }}</span>
-                            <span class="muted" style="font-size:13px">{{ \App\Support\Persian::digits($avgRating) }} از ۵ ({{ \App\Support\Persian::digits($reviewCount) }} نظر)</span>
+                            <span class="muted">{{ \App\Support\Persian::digits($avgRating) }} از ۵ ({{ \App\Support\Persian::digits($reviewCount) }} نظر)</span>
                         </div>
                     @endif
 
                     @if($stock > 0)
-                    <form action="{{ route('cart.add') }}" method="post" style="display:flex;gap:12px;align-items:center;margin-top:18px;flex-wrap:wrap">
+                    <form action="{{ route('cart.add') }}" method="post" class="buy-actions">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         <div class="qty-input">
@@ -61,14 +57,14 @@
                             <input type="number" name="quantity" value="1" min="1" max="{{ min($stock, 99) }}">
                             <button type="button" onclick="this.previousElementSibling.stepDown()">−</button>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-lg" style="flex:1;min-width:200px">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.6"/><circle cx="18" cy="21" r="1.6"/><path d="M2.5 3h2l2.4 12.2a2 2 0 0 0 2 1.8h8.6a2 2 0 0 0 2-1.6L21 7H6"/></svg>
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.6"/><circle cx="18" cy="21" r="1.6"/><path d="M2.5 3h2l2.4 12.2a2 2 0 0 0 2 1.8h8.6a2 2 0 0 0 2-1.6L21 7H6"/></svg>
                             افزودن به سبد خرید
                         </button>
                     </form>
                     @else
-                    <div style="margin-top:18px">
-                        <button type="button" class="btn btn-secondary btn-lg" disabled style="width:100%;opacity:.6;cursor:not-allowed">
+                    <div class="out-of-stock">
+                        <button type="button" class="btn btn-secondary btn-lg btn-block" disabled>
                             این کالا فعلاً ناموجود است
                         </button>
                     </div>
@@ -107,7 +103,7 @@
             <div class="section-head">
                 <h2>نظرات کاربران
                     @if($reviewCount > 0)
-                        <span class="muted" style="font-size:14px;font-weight:400">({{ \App\Support\Persian::digits($reviewCount) }} نظر)</span>
+                        <span class="section-note">({{ \App\Support\Persian::digits($reviewCount) }} نظر)</span>
                     @endif
                 </h2>
             </div>
@@ -129,7 +125,7 @@
                 <p class="muted">هنوز نظری برای این کالا ثبت نشده است. اولین نفر باشید!</p>
             @endif
 
-            <div class="checkout-box" style="max-width:680px;margin-top:20px">
+            <div class="checkout-box review-form-box">
                 <h3>ثبت نظر جدید</h3>
                 <form action="{{ route('review.store', ['slug' => $product->slug]) }}" method="post">
                     @csrf
@@ -150,18 +146,20 @@
                             </select>
                             @error('rating')<div class="field-error">{{ $message }}</div>@enderror
                         </div>
-                        <div class="form-group" style="grid-column:1/-1">
+                        <div class="form-group full">
                             <label>ایمیل (اختیاری — منتشر نمی‌شود)</label>
                             <input type="email" name="email" value="{{ old('email', auth()->user()?->email) }}" class="form-control" dir="ltr">
                             @error('email')<div class="field-error">{{ $message }}</div>@enderror
                         </div>
-                        <div class="form-group" style="grid-column:1/-1">
+                        <div class="form-group full">
                             <label>متن نظر <span class="required">*</span></label>
                             <textarea name="comment" rows="4" class="form-control" required>{{ old('comment') }}</textarea>
                             @error('comment')<div class="field-error">{{ $message }}</div>@enderror
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary" style="margin-top:12px">ثبت نظر</button>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">ثبت نظر</button>
+                    </div>
                 </form>
             </div>
         </section>

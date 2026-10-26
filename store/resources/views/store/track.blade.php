@@ -4,47 +4,38 @@
 
 @section('content')
     <div class="container">
-        <div class="breadcrumb">
-            <a href="{{ route('home') }}">خانه</a>
-            <span>/</span>
-            <span>پیگیری سفارش</span>
-        </div>
+        @include('partials.breadcrumb', ['items' => [['label' => 'پیگیری سفارش']]])
 
         <div class="page page-narrow">
             <h1>پیگیری سفارش</h1>
             <p class="muted">شمارهٔ سفارش خود را وارد کنید تا وضعیت فعلی و تاریخچهٔ آن را ببینید.</p>
 
-            <form action="{{ route('track.order') }}" method="post" style="display:flex;gap:10px;max-width:520px;margin:20px 0 28px">
+            <form action="{{ route('track.order') }}" method="post" class="inline-form">
                 @csrf
                 <input type="text" name="order_number" value="{{ old('order_number', $searchedFor) }}"
                        class="form-control" placeholder="مثال: ۱۲۳۴۵ یا 12345" dir="ltr" required>
-                <button type="submit" class="btn btn-primary" style="white-space:nowrap">پیگیری</button>
+                <button type="submit" class="btn btn-primary">پیگیری</button>
             </form>
 
             @if($searchedFor && !$order)
                 <div class="empty-state">
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/><path d="M8.5 11h5"/></svg>
+                    </div>
                     <h2>سفارشی با این شماره پیدا نشد</h2>
                     <p class="muted">
                         شمارهٔ سفارش را از ایمیل تأیید خرید یا صفحهٔ حساب کاربری خود بردارید.
                         دقت کنید که «O» و «0» با هم اشتباه نشوند.
                     </p>
-                    <a href="{{ route('pages.contact') }}" class="btn btn-secondary" style="margin-top:14px">تماس با پشتیبانی</a>
+                    <a href="{{ route('pages.contact') }}" class="btn btn-secondary">تماس با پشتیبانی</a>
                 </div>
             @endif
 
             @if($order)
                 <div class="track-result">
-                    <div class="track-head">
-                        <div>
-                            <div class="muted" style="font-size:13px">شمارهٔ سفارش</div>
-                            <div class="order-number" dir="ltr">{{ $order->number }}</div>
-                        </div>
-                        <span class="status-badge {{ \App\Support\OrderPresenter::statusClass($order->status?->value(), $paymentStatus) }}">
-                            {{ \App\Support\OrderPresenter::statusLabel($order->status?->value(), $paymentStatus) }}
-                        </span>
-                    </div>
+                    @include('partials.order_status_head', ['order' => $order])
 
-                    <h3 style="margin:22px 0 12px">مراحل سفارش</h3>
+                    <h3 class="subsection-title">مراحل سفارش</h3>
                     @php($steps = \App\Support\OrderPresenter::trackingSteps($order->status?->value(), $paymentStatus))
                     <div class="track-steps">
                         @foreach($steps as $i => [$label, $done])
@@ -55,7 +46,7 @@
                         @endforeach
                     </div>
 
-                    <h3 style="margin:26px 0 12px">اقلام سفارش</h3>
+                    <h3 class="subsection-title">اقلام سفارش</h3>
                     <table class="order-table">
                         <thead>
                             <tr><th>کالا</th><th>تعداد</th><th>مبلغ</th></tr>

@@ -32,7 +32,7 @@
             <button type="submit" class="btn btn-primary btn-block btn-lg" autofocus>ورود</button>
         </form>
 
-        <p class="muted" style="font-size:12px;margin-top:18px;text-align:center">
+        <p class="fine-print">
             ورود مدیر: اطلاعات پیش‌فرض پر شده است — فقط «ورود» را بزنید.<br>
             مشتری هستید؟ همین‌جا با ایمیل خودتان وارد شوید یا
             <a href="{{ route('account.register') }}">ثبت‌نام کنید</a>.<br>

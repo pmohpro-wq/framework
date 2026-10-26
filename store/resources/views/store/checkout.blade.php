@@ -4,13 +4,9 @@
 
 @section('content')
     <div class="container">
-        <div class="steps">
-            <div class="step done"><div class="dot">۱</div>انتخاب کالا</div>
-            <div class="step done"><div class="dot">۲</div>سبد خرید</div>
-            <div class="step active"><div class="dot">۳</div>پرداخت</div>
-        </div>
+        @include('partials.checkout_steps', ['current' => 3])
 
-        <h2 style="margin:16px 0">اطلاعات ارسال و پرداخت</h2>
+        <h2 class="page-title">اطلاعات ارسال و پرداخت</h2>
 
         <form action="{{ route('checkout.place-order') }}" method="post">
             @csrf
@@ -58,7 +54,7 @@
                                 <input type="text" name="postalcode" value="{{ old('postalcode') }}" class="form-control" dir="ltr" maxlength="12">
                                 @error('postalcode')<div class="field-error">{{ $message }}</div>@enderror
                             </div>
-                            <div class="form-group" style="grid-column:1/-1">
+                            <div class="form-group full">
                                 <label>نشانی کامل <span class="required">*</span></label>
                                 <textarea name="address" class="form-control" required>{{ old('address') }}</textarea>
                                 @error('address')<div class="field-error">{{ $message }}</div>@enderror
@@ -73,7 +69,12 @@
                             <label class="option-card">
                                 <input type="radio" name="shipping_method" value="{{ $method->id }}"
                                        @checked($i === 0 || old('shipping_method') == $method->id) required>
-                                <span>🚚 {{ $method->name }}</span>
+                                <span class="opt-body">
+                                    <span class="label">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11"/><path d="M14 9h4l4 4v4c0 .6-.4 1-1 1h-2"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+                                        {{ $method->name }}
+                                    </span>
+                                </span>
                                 <span class="opt-price">{{ \App\Support\Persian::toman($method->configuration['cost'] ?? 0, false) }} تومان</span>
                             </label>
                         @empty
@@ -89,10 +90,15 @@
                             <label class="option-card">
                                 <input type="radio" name="payment_method" value="{{ $method->id }}"
                                        @checked($i === 0 || old('payment_method') == $method->id) required>
-                                <span>💳 {{ $method->name }}</span>
-                                @if($method->description)
-                                    <span class="muted" style="font-size:12px">{{ $method->description }}</span>
-                                @endif
+                                <span class="opt-body">
+                                    <span class="label">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/></svg>
+                                        {{ $method->name }}
+                                    </span>
+                                    @if($method->description)
+                                        <span class="muted">{{ $method->description }}</span>
+                                    @endif
+                                </span>
                             </label>
                         @empty
                             <div class="alert alert-warning">روش پرداختی تعریف نشده است.</div>
@@ -112,12 +118,12 @@
                         @if(session('success') && str_contains(session('success'), 'تخفیف'))
                             <div class="alert alert-success">{{ session('success') }}</div>
                         @endif
-                        <div style="display:flex;gap:10px">
+                        <div class="coupon-field">
                             <input type="text" name="coupon" value="{{ old('coupon') }}" class="form-control"
-                                   dir="ltr" placeholder="مثال: WELCOME10" style="text-transform:uppercase">
+                                   dir="ltr" placeholder="مثال: WELCOME10">
                         </div>
                         @error('coupon')<div class="field-error">{{ $message }}</div>@enderror
-                        <p class="muted" style="font-size:12px;margin-top:8px">
+                        <p class="muted-sm mt-8">
                             اگر کد تخفیف دارید وارد کنید؛ مبلغ کسر پیش از ثبت سفارش اعمال می‌شود.
                         </p>
                     </div>
@@ -125,20 +131,21 @@
 
                 {{-- خلاصه سفارش --}}
                 <div>
-                    <div class="checkout-box" style="position:sticky;top:90px">
+                    <div class="checkout-box checkout-box--sticky">
                         <h3>خلاصه سفارش</h3>
-                        <div class="row" style="display:flex;justify-content:space-between;margin-bottom:10px">
+                        <div class="sum-row">
                             <span>مبلغ کالاها</span>
                             <span>{{ \App\Support\Persian::toman($total) }}</span>
                         </div>
-                        <div class="row muted" style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:16px">
+                        <div class="sum-row sum-row--muted">
                             <span>هزینه ارسال</span>
                             <span>پس از انتخاب روش ارسال</span>
                         </div>
                         <button type="submit" class="btn btn-primary btn-block btn-lg">
-                            ثبت سفارش و پرداخت 💳
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/></svg>
+                            ثبت سفارش و پرداخت
                         </button>
-                        <p class="muted" style="font-size:12px;margin-top:12px;text-align:center">
+                        <p class="fine-print">
                             با ثبت سفارش، قوانین فروشگاه را می‌پذیرید.
                         </p>
                     </div>
