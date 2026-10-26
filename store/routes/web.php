@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+// پنل مدیریت صفحهٔ «/» ندارد؛ به فهرست محصولات هدایت می‌کنیم
+Route::redirect('/admin', '/admin/product');
+
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('product.show');
 
 Route::get('/category/{taxonomySlug}/{taxonSlug}', [CategoryController::class, 'show'])
@@ -58,3 +61,4 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [LoginController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
+

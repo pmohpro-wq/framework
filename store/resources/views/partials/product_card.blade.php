@@ -10,7 +10,7 @@
         @if($img)
             <img src="{{ $img }}" alt="{{ $product->name }}" loading="lazy">
         @else
-            <img src="{{ asset('images/placeholder.svg') }}" alt="{{ $product->name }}" loading="lazy">
+            <img src="/images/placeholder.svg" alt="{{ $product->name }}" loading="lazy">
         @endif
     </a>
     <div class="card-body">

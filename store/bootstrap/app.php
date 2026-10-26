@@ -11,7 +11,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // تبدیل لینک‌های مطلقِ ساخته‌شده با Host پروکسی به لینک نسبی (پیش‌نمایش پلتفرم)
+        $middleware->append(\App\Http\Middleware\MakeUrlsRelative::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

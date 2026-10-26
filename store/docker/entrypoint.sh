@@ -15,6 +15,7 @@ APP_NAME="${APP_NAME:-فروشگاه من}"
 APP_ENV=${APP_ENV:-production}
 APP_DEBUG=${APP_DEBUG:-false}
 APP_URL=${APP_URL:-http://localhost:8000}
+ASSET_URL=/
 APP_LOCALE=fa
 APP_FALLBACK_LOCALE=fa
 APP_TIMEZONE=Asia/Tehran

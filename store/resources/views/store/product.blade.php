@@ -12,7 +12,7 @@
 
         <div class="page product-page">
             <div class="gallery">
-                <img src="{{ $product->getImageUrl('medium') ?? asset('images/placeholder.svg') }}"
+                <img src="{{ $product->getImageUrl('medium') ?? '/images/placeholder.svg' }}"
                      alt="{{ $product->name }}">
             </div>
 

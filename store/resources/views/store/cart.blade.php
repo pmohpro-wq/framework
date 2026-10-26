@@ -34,7 +34,7 @@
                         <tr>
                             <td>
                                 <div class="cart-item-info">
-                                    <img src="{{ $item->product->getImageUrl('thumbnail') ?? asset('images/placeholder.svg') }}"
+                                    <img src="{{ $item->product->getImageUrl('thumbnail') ?? '/images/placeholder.svg' }}"
                                          alt="{{ $item->product->name }}">
                                     <a href="{{ route('product.show', $item->product->slug) }}">
                                         {{ $item->product->name }}

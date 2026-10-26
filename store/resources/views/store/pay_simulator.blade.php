@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>درگاه پرداخت — فروشگاه من</title>
-    <link rel="stylesheet" href="{{ asset('assets/store/css/store.css') }}">
+    <link rel="stylesheet" href="/assets/store/css/store.css">
 </head>
 <body>
 

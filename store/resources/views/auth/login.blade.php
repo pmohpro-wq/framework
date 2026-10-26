@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ورود مدیر — فروشگاه من</title>
-    <link rel="stylesheet" href="{{ asset('assets/store/css/store.css') }}">
+    <link rel="stylesheet" href="/assets/store/css/store.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23ef4056'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif'>ف</text></svg>">
 </head>
 <body>
