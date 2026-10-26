@@ -39,23 +39,13 @@
                             <div class="muted" style="font-size:13px">شمارهٔ سفارش</div>
                             <div class="order-number" dir="ltr">{{ $order->number }}</div>
                         </div>
-                        <span class="status-badge status-{{ $order->status->value() ?? 'pending' }}">
-                            {{ [
-                                'pending'   => 'در انتظار پرداخت',
-                                'on_hold'   => 'در حال بررسی',
-                                'completed' => 'تکمیل شده',
-                                'cancelled' => 'لغو شده',
-                            ][$order->status->value() ?? 'pending'] ?? 'در حال پردازش' }}
+                        <span class="status-badge {{ \App\Support\OrderPresenter::statusClass($order->status?->value(), $paymentStatus) }}">
+                            {{ \App\Support\OrderPresenter::statusLabel($order->status?->value(), $paymentStatus) }}
                         </span>
                     </div>
 
                     <h3 style="margin:22px 0 12px">مراحل سفارش</h3>
-                    @php($steps = [
-                        ['ثبت سفارش', true],
-                        ['پرداخت', in_array($order->status->value() ?? '', ['on_hold', 'completed'])],
-                        ['آماده‌سازی و ارسال', in_array($order->status->value() ?? '', ['on_hold', 'completed'])],
-                        ['تحویل', ($order->status->value() ?? '') === 'completed'],
-                    ])
+                    @php($steps = \App\Support\OrderPresenter::trackingSteps($order->status?->value(), $paymentStatus))
                     <div class="track-steps">
                         @foreach($steps as $i => [$label, $done])
                             <div class="track-step {{ $done ? 'done' : '' }}">

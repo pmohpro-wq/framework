@@ -18,13 +18,8 @@
                     <div class="muted" style="font-size:13px">سفارش</div>
                     <div class="order-number" dir="ltr">{{ $order->number }}</div>
                 </div>
-                <span class="status-badge status-{{ $order->status->value() ?? 'pending' }}">
-                    {{ [
-                        'pending'   => 'در انتظار پرداخت',
-                        'on_hold'   => 'در حال بررسی',
-                        'completed' => 'تکمیل شده',
-                        'cancelled' => 'لغو شده',
-                    ][$order->status->value() ?? 'pending'] ?? 'در حال پردازش' }}
+                <span class="status-badge {{ \App\Support\OrderPresenter::statusClass($order->status?->value(), $paymentStatus) }}">
+                    {{ \App\Support\OrderPresenter::statusLabel($order->status?->value(), $paymentStatus) }}
                 </span>
             </div>
 

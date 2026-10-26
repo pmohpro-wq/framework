@@ -1238,6 +1238,8 @@ input, select, textarea { font-family: inherit; }
 }
 .status-pending   { background: #fdf4e3; color: #b7791f; }
 .status-on_hold   { background: #e8f0fe; color: #2a60c2; }
+.status-processing { background: #e8f0fe; color: #2a60c2; }
+.status-withdrawn { background: #f1f3f5; color: #6b7280; }
 .status-completed { background: var(--green-50); color: var(--green-500); }
 .status-cancelled { background: var(--red-50); color: var(--red-600); }
 

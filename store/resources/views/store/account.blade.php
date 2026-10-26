@@ -43,16 +43,12 @@
                 @else
                     <div class="order-list">
                         @foreach($orders as $order)
+                            @php($ps = \App\Support\OrderPresenter::paymentStatus($order))
                             <a href="{{ route('account.orders.show', ['number' => $order->number]) }}" class="order-card">
                                 <div class="order-card-head">
                                     <span class="order-number" dir="ltr">{{ $order->number }}</span>
-                                    <span class="status-badge status-{{ $order->status->value() ?? 'pending' }}">
-                                        {{ [
-                                            'pending'   => 'در انتظار پرداخت',
-                                            'on_hold'   => 'در حال بررسی',
-                                            'completed' => 'تکمیل شده',
-                                            'cancelled' => 'لغو شده',
-                                        ][$order->status->value() ?? 'pending'] ?? 'در حال پردازش' }}
+                                    <span class="status-badge {{ \App\Support\OrderPresenter::statusClass($order->status?->value(), $ps) }}">
+                                        {{ \App\Support\OrderPresenter::statusLabel($order->status?->value(), $ps) }}
                                     </span>
                                 </div>
                                 <div class="order-card-body">

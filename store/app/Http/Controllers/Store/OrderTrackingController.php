@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\Controller;
+use App\Support\OrderPresenter;
 use Illuminate\Http\Request;
 use Vanilo\Order\Models\OrderProxy;
 
@@ -13,6 +14,7 @@ class OrderTrackingController extends Controller
         return view('store.track', [
             'order'      => null,
             'searchedFor' => null,
+            'paymentStatus' => null,
         ]);
     }
 
@@ -31,6 +33,7 @@ class OrderTrackingController extends Controller
         return view('store.track', [
             'order'       => $order,
             'searchedFor' => $number,
+            'paymentStatus' => OrderPresenter::paymentStatus($order),
         ]);
     }
 }

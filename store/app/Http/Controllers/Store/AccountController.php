@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\Controller;
+use App\Support\OrderPresenter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -33,7 +34,10 @@ class AccountController extends Controller
             ->with(['items', 'billpayer', 'shippingAddress'])
             ->firstOrFail();
 
-        return view('store.account_order', ['order' => $order]);
+        return view('store.account_order', [
+            'order'         => $order,
+            'paymentStatus' => OrderPresenter::paymentStatus($order),
+        ]);
     }
 
     /** صفحهٔ پروفایل */

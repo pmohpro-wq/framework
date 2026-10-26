@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Store;
 use App\Http\Controllers\Controller;
 use App\Payment\Gateways\IranianPaymentResponse;
 use Illuminate\Http\Request;
+use Vanilo\Order\Models\OrderStatus;
 use Vanilo\Payment\Models\PaymentProxy;
 use Vanilo\Payment\Processing\PaymentResponseHandler;
 
@@ -49,6 +50,7 @@ class PaymentController extends Controller
         }
 
         $order = $payment->payable;
+        $this->markProcessingIfPending($order);
 
         return redirect()
             ->route('checkout.success', ['orderNumber' => $order->number])
@@ -81,8 +83,26 @@ class PaymentController extends Controller
                 ->with('error', 'پرداخت ناموفق بود یا لغو شد. می‌توانید مجدداً تلاش کنید.');
         }
 
+        $this->markProcessingIfPending($order);
+
         return redirect()
             ->route('checkout.success', ['orderNumber' => $order->number])
             ->with('success', 'پرداخت با موفقیت انجام شد. سفارش شما در حال آماده‌سازی است.');
+    }
+
+    /**
+     * پس از پرداخت موفق، سفارش از «در انتظار پرداخت» به «در حال آماده‌سازی»
+     * (processing) منتقل می‌شود تا پیگیری سفارش و پنل ادمین وضعیت درست را نشان دهند.
+     */
+    private function markProcessingIfPending($order): void
+    {
+        if (! $order) {
+            return;
+        }
+
+        if (($order->status?->value() ?? OrderStatus::PENDING) === OrderStatus::PENDING) {
+            $order->status = OrderStatus::PROCESSING();
+            $order->save();
+        }
     }
 }
