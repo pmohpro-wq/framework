@@ -211,9 +211,11 @@ class StoreSeeder extends Seeder
         imagepng($img, $path);
         imagedestroy($img);
 
+        // نکته: trait وانیلو (HasImagesFromMediaLibrary) تصاویر را از کالکشن
+        // پیش‌فرض 'default' می‌خواند؛ ذخیره در کالکشن دیگر باعث placeholder می‌شود.
         $product->addMedia($path)
             ->usingName($title)
             ->usingFileName("{$product->sku}.png")
-            ->toMediaCollection('images');
+            ->toMediaCollection('default');
     }
 }
